@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stopwatch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+      background-image: url("WhatsApp\ Image\ 2023-09-22\ at\ 12.20.55.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    
+    .stopwatch {
+      font-size: 48px;
+      font-weight: bold;
+      color: hsl(118, 91%, 42%);
+      margin: 180px auto;
+    }
+    
+    .buttons {
+      margin-bottom: 20px;
+    }
+    
+    .buttons button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 0 5px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="stopwatch" id="stopwatch">00:00:00</div>
+  <div class="buttons">
+    <button onclick="start()">Start</button>
+    <button onclick="stop()">Stop</button>
+    <button onclick="reset()">Reset</button>
+  </div>
+
+  <script>
+    var stopwatchInterval;
+    var startTime;
+    var elapsedTime = 0;
+    var isRunning = false;
+
+    function start() {
+      if (!isRunning) {
+        isRunning = true;
+        startTime = Date.now() - elapsedTime;
+        stopwatchInterval = setInterval(updateTime, 10);
+      }
+    }
+
+    function stop() {
+      if (isRunning) {
+        isRunning = false;
+        clearInterval(stopwatchInterval);
+      }
+    }
+
+    function reset() {
+      stop();
+      elapsedTime = 0;
+      updateTime();
+    }
+
+    function updateTime() {
+      var currentTime = Date.now();
+      elapsedTime = currentTime - startTime;
+      var formattedTime = formatTime(elapsedTime);
+      document.getElementById('stopwatch').innerText = formattedTime;
+    }
+
+    function formatTime(time) {
+      var milliseconds = Math.floor((time % 1000) / 10);
+      var seconds = Math.floor((time / 1000) % 60);
+      var minutes = Math.floor((time / (1000 * 60)) % 60);
+      var hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+
+      var formattedHours = hours.toString().padStart(2, '0');
+      var formattedMinutes = minutes.toString().padStart(2, '0');
+      var formattedSeconds = seconds.toString().padStart(2, '0');
+      var formattedMilliseconds = milliseconds.toString().padStart(2, '0');
+
+      return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`;
+    }
+  </script>
+</body>
+</html>
